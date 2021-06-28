@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: bankup
+Version: 0.0.1
+Summary: package from project which aims is to manage budget
+Home-page: git@github.com:arnaudczls/bankup.git
+Author: Arnaud CAZELLES
+Author-email: a.cazelles@gmail.com
+License: unlicense
+Description: UNKNOWN
+Platform: UNKNOWN

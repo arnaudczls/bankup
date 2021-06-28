@@ -15,6 +15,7 @@ setup(
     license='unlicense',
     packages=find_packages(),
     install_requires=requirements,
-    packages=['bankup'],
+    # include_package_data: to install data from MANIFEST.in
+    include_package_data=True,
     zip_safe=False
 )

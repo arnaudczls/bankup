@@ -1,0 +1,10 @@
+MANIFEST.in
+requirements.txt
+setup.py
+bankup/__init__.py
+bankup.egg-info/PKG-INFO
+bankup.egg-info/SOURCES.txt
+bankup.egg-info/dependency_links.txt
+bankup.egg-info/not-zip-safe
+bankup.egg-info/requires.txt
+bankup.egg-info/top_level.txt
