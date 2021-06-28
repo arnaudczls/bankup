@@ -1,0 +1,9 @@
+# packaging
+pip>=9
+setuptools>=26
+
+# data science
+numpy
+pandas
+pandas-profiling
+scikit-learn
