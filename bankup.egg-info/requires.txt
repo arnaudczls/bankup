@@ -1,6 +1,0 @@
-pip>=9
-setuptools>=26
-numpy
-pandas
-pandas-profiling
-scikit-learn
