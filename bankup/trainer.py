@@ -16,7 +16,7 @@ import bankup.data as data
 from bankup.encoder import CyclicalEncoder
 
 
-class Trainer(object):
+class Trainer_cost_model(object):
     def __init__(self, X, y):
         """
             X: pandas DataFrame
@@ -76,7 +76,7 @@ class Trainer(object):
     def save_model(self):
         """method that saves the model into a .joblib file """
         # Implement here
-        joblib.dump(self.pipeline, 'model.joblib')
+        joblib.dump(self.pipeline, 'model_cost.joblib')
         print("saved model.joblib locally")
 
 
