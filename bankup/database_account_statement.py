@@ -44,9 +44,43 @@ class Account_statement:
         releve_compte.columns=columns
         return releve_compte
     
+    def get_data_clean(fichier,onglet):
+        #----------info---------------
+        #Recup les data du fichier excel et nettoie la base de donnée
+        #   -les dates au bon format
+        #   -efface les lignes qui son identifier:
+        #                       Autre
+        #                       Cheque non identifie
+        #Input:
+        #fichier==>Nom du fichier
+        #onglet==>Onglet du fichier
+        #
+        #Output:
+        #Dataframe
+        #
+        #Mise a jour: 29/06/2021
+        #----------end info---------------
+        releve_compte=Account_statement.get_data(fichier,onglet)
+        # Traitement des dates
+        releve_compte['Date']=pd.to_datetime(releve_compte['Date'])
+        #releve_compte['Date']=pd.to_datetime(releve_compte['Date'],format='%Y-%m-%d')
+        # Traitement des valeurs
+        releve_compte['Valeurs']=pd.to_numeric(releve_compte['Valeurs'],downcast="float")
+
+        #Supprime les lignes non utilisé
+        #Suppression des lignes autre et cheque non identifier
+        Mask_liste_a_suprimer=(
+                            releve_compte["Groupes par type"].str.contains(
+                            "Autre|Cheque non identifie"
+                                    )
+                                 )
+        releve_compte=releve_compte[Mask_liste_a_suprimer == False]
+        return releve_compte
     
-if __name__=='__main__':
-    fichier='releves_banque_2015_16_17_18_19_20_21_V6.xlsm'
-    onglet='Releve_compte'
-    data=Account_statement.get_data(fichier,onglet)
-    print(data)
+    
+# if __name__=='__main__':
+#     fichier='releves_banque_2015_16_17_18_19_20_21_V6.xlsm'
+#     onglet='Releve_compte'
+#     #data=Account_statement.get_data(fichier,onglet)
+#     data=Account_statement.get_data_clean(fichier,onglet)
+#     print(data)
