@@ -2,12 +2,16 @@
 #Pandas
 import pandas as pd
 #pipeline
-from sklearn.compose import ColumnTransformer
+from sklearn.compose import ColumnTransformer 
+from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
 #ohe
 from sklearn.preprocessing import OneHotEncoder
+#Extraction text
+from sklearn.feature_extraction.text import CountVectorizer
 #model
 from sklearn.linear_model import Lasso
+from sklearn.tree import DecisionTreeClassifier
 import joblib
 #train
 from sklearn.model_selection import train_test_split
@@ -62,21 +66,18 @@ class Trainer_cost_model(object):
         r2 = self.pipeline.score(X_test,y_test)
         return round(r2, 2)
 
-
-    # def upload_model_to_gcp(self):
-    #     client = storage.Client()
-
-    #     bucket = client.bucket(BUCKET_NAME)
-
-    #     blob = bucket.blob(STORAGE_LOCATION)
-
-    #     blob.upload_from_filename('model.joblib')
-
     def save_model(self):
         """method that saves the model into a .joblib file """
         # Implement here
         joblib.dump(self.pipeline, 'model_cost.joblib')
         print("saved model.joblib locally")
+        
+    def load_model(self):
+        """method that load the model into a .joblib file """
+        # load here
+        pipeline = joblib.load('model_lasso.joblib')
+        print("model.joblib has been load ")
+        return pipeline
 
 class Trainer_class_model(object):
     def __init__(self, X, y):
@@ -88,22 +89,18 @@ class Trainer_class_model(object):
         self.X = X
         self.y = y
 
-
-    def set_pipeline(self):
-        # """defines the pipeline as a class attribute"""
-        # preproc_pipe = ColumnTransformer([
-        #     ('time_cyclical', CyclicalEncoder('month'),
-        #                 ['month']),
-        #     ('ohe_date_charge_groupe', OneHotEncoder(handle_unknown='ignore',sparse=False),
-        #                 ["year","month",
-        #                 "Type de charge ou revenus",
-        #                 "Groupes par structure"])
-        #                                 ], remainder="drop")
+    def set_pipeline(self,list_stop_word=None):
+        """defines the pipeline as a class attribute"""
+        Clean_text = Pipeline([
+                ('clean_text', FunctionTransformer(data.clean_data_text))   
+                        ])
+        tree = DecisionTreeClassifier()
 
         self.pipeline = Pipeline([
-            ('preproc', preproc_pipe),
-            ('linear_model',  Lasso())
-            ])
+                ('clean_text', Clean_text),
+                ('Bag of word',CountVectorizer(stop_words=list_stop_word)),
+                ('tree_classifier',tree)     
+                        ])
 
     def run(self):
         self.set_pipeline()
@@ -125,21 +122,19 @@ class Trainer_class_model(object):
         r2 = self.pipeline.score(X_test,y_test)
         return round(r2, 2)
 
-
-    def upload_model_to_gcp(self):
-        client = storage.Client()
-
-        bucket = client.bucket(BUCKET_NAME)
-
-        blob = bucket.blob(STORAGE_LOCATION)
-
-        blob.upload_from_filename('model.joblib')
-
     def save_model(self):
         """method that saves the model into a .joblib file """
         # Implement here
-        joblib.dump(self.pipeline, 'model_cost.joblib')
+        joblib.dump(self.pipeline, 'model_classification_label.joblib')
         print("saved model.joblib locally")
+        
+            
+    def load_model(self):
+        """method that load the model into a .joblib file """
+        # load here
+        pipeline = joblib.load('model_classification_label.joblib')
+        print("model.joblib has been load ")
+        return pipeline
 
 
 
