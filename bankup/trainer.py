@@ -37,7 +37,7 @@ class Trainer_cost_model(object):
                         ['month']),
             ('ohe_date_charge_groupe', OneHotEncoder(handle_unknown='ignore',sparse=False),
                         ["year","month",
-                        "Type de charge ou revenus",
+                        #"Type de charge ou revenus",
                         "Groupes par structure"])
                                         ], remainder="drop")
 
@@ -75,7 +75,7 @@ class Trainer_cost_model(object):
     def load_model(self):
         """method that load the model into a .joblib file """
         # load here
-        pipeline = joblib.load('model_lasso.joblib')
+        pipeline = joblib.load('model_cost.joblib')
         print("model.joblib has been load ")
         return pipeline
 
