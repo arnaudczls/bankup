@@ -1,4 +1,5 @@
 #import
+import os
 #Pandas
 import pandas as pd
 #pipeline
@@ -68,9 +69,14 @@ class Trainer_cost_model(object):
 
     def save_model(self):
         """method that saves the model into a .joblib file """
-        # Implement here
-        joblib.dump(self.pipeline, 'model_cost.joblib')
-        print("saved model.joblib locally")
+        # path components
+        path_v2 = ".."
+        directory_name = "model"
+        file_name='model_cost.joblib'
+        file_name=os.path.join(path_v2,directory_name, file_name)
+        
+        joblib.dump(self.pipeline, file_name)
+        print(f"saved {file_name} in directory: {directory_name}")
         
     def load_model(self):
         """method that load the model into a .joblib file """
@@ -124,9 +130,14 @@ class Trainer_class_model(object):
 
     def save_model(self):
         """method that saves the model into a .joblib file """
-        # Implement here
-        joblib.dump(self.pipeline, 'model_classification_label.joblib')
-        print("saved model.joblib locally")
+         # path components
+        path_v2 = ".."
+        directory_name = "model"
+        file_name='model_classification_label.joblib'
+        file_name=os.path.join(path_v2,directory_name, file_name)
+        
+        joblib.dump(self.pipeline, file_name)
+        print(f"saved {file_name} in directory: {directory_name}")
         
             
     def load_model(self):
