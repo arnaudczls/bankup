@@ -69,9 +69,11 @@ def get_data_clean(fichier,onglet):
     # Traitement des dates
     releve_compte['Date']=pd.to_datetime(releve_compte['Date'])
     #releve_compte['Date']=pd.to_datetime(releve_compte['Date'],format='%Y-%m-%d')
-    #Rajoute une colonnes years et mois
+    #Rajoute une colonnes years, month and day
     releve_compte["year"]=releve_compte["Date"].dt.year
     releve_compte["month"]=releve_compte["Date"].dt.month
+    releve_compte["day"]=releve_compte["Date"].dt.day
+    
     # Traitement des valeurs
     releve_compte['Valeurs']=pd.to_numeric(releve_compte['Valeurs'],downcast="float")
     #Supprime les lignes non utilisé

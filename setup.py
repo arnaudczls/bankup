@@ -7,7 +7,7 @@ requirements = [x.strip() for x in content if 'git+' not in x]
 
 setup(
     name='bankup',
-    version='0.0.1',
+    version='0.0.2',
     description='package from project which aims is to manage budget',
     url='git@github.com:arnaudczls/bankup.git',
     author='Arnaud CAZELLES',
