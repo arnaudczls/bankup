@@ -1,3 +1,4 @@
+from ipaddress import collapse_addresses
 import os
 import pandas as pd
 import numpy as np
@@ -48,17 +49,20 @@ def get_data(fichier,onglet):
     releve_compte.columns=columns
     return releve_compte
     
-def get_data_clean(fichier,onglet):
+def get_data_clean(fichier,onglet,drop_row_null="yes"):
     #----------info---------------
     #Recup les data du fichier excel et nettoie la base de donnée
     #   -les dates au bon format
-    #       Rajoute une colonnes years et mois
-    #   -efface les lignes qui son identifier:
+    #       Rajoute une colonnes years, month, day
+    #   -efface les lignes qui son identifier: argument drop_row_null
     #                       Autre
     #                       Cheque non identifie
     #Input:
     #fichier==>Nom du fichier
     #onglet==>Onglet du fichier
+    #drop_row_null==> efface les lignes contenant "Autre ou Cheque non identifie" de la colonne"Groupes par type"
+    #                 par default "yes"
+    #                 possible choise: "yes" or "no"
     #
     #Output:
     #Dataframe
@@ -78,12 +82,13 @@ def get_data_clean(fichier,onglet):
     releve_compte['Valeurs']=pd.to_numeric(releve_compte['Valeurs'],downcast="float")
     #Supprime les lignes non utilisé
     #Suppression des lignes autre et cheque non identifier
-    Mask_liste_a_suprimer=(
-                        releve_compte["Groupes par type"].str.contains(
-                        "Autre|Cheque non identifie"
+    if drop_row_null=="yes":
+        Mask_liste_a_suprimer=(
+                            releve_compte["Groupes par type"].str.contains(
+                            "Autre|Cheque non identifie"
+                                    )
                                 )
-                             )
-    releve_compte=releve_compte[Mask_liste_a_suprimer == False]
+        releve_compte=releve_compte[Mask_liste_a_suprimer == False]
     return releve_compte
 
 
@@ -107,6 +112,7 @@ def get_data_by_month(fichier,onglet):
     #Group by
     releve_compte=releve_compte.groupby(
         by=["year","month","Type de charge ou revenus","Groupes par structure"]).sum()
+    releve_compte=releve_compte.drop(columns=["day"])
     releve_compte=releve_compte.reset_index()
     return releve_compte
 

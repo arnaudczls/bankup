@@ -10,5 +10,4 @@ scikit-learn
 
 #util
 unidecode>=1.2.0
-string
 nltk
