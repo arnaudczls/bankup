@@ -18,7 +18,7 @@ import joblib
 from sklearn.model_selection import train_test_split
 #package
 import bankup.data as data
-from bankup.encoder import CyclicalEncoder
+from bankup.encoder_v1 import CyclicalEncoder
 
 
 class Trainer_cost_model(object):
