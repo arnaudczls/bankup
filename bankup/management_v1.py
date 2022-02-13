@@ -296,11 +296,48 @@ class Account(object):
                 ],axis=1)
         return self.categorisation_definition_df
     
+    def categorisation_revenus_charge(x):
+        #Function perform to clasifi charges
+        switcher={
+            "Revenus":"Revenus",
+            "Revenus du capital":"Revenus du capital",
+            "Habitation":"Charges fixes",
+            "Assurance":"Charges fixes",  
+            "Garde enfants":"Charges fixes",
+            "Scolarité":"Charges fixes",
+            "Impot":"Charges fixes",
+            "Alimentation":"Charges courantes",
+            "Entretien du logement":"Charges courantes",
+            "Amenagement du logement": "Charges occasionnelles",
+            "Equipement du logement":"Charges expectionnel",
+            "Transport":"Charges courantes",
+            "Vehicule":"Charges occasionnelles",
+            "Achat vehicule":"Charges expectionnel",
+            "Habillement":"Charges courantes",
+            "Beaute et bien etre":"Charges courantes",
+            "Sante":"Charges courantes",
+            "Culture, loisirs, education et sport":"Charges courantes",
+            "Moka":"Charges courantes",
+            "Vacances":"Charges expectionnel",
+            "Epargne cour terme":"Epargne",    
+            "Epargne long terme":"Charges fixes",
+            "Epargne moyen terme":"Epargne",
+            "Divers":"Charges occasionnelles",
+            "Service":"Charges fixes",
+            "Poste":"Charges occasionnelles",
+            "Frais professionnel":"Charges occasionnelles",
+            "Amende":"Charges expectionnel",
+            "Evenement de vie":"Charges expectionnel",
+        }
+        return switcher.get(x,"not find")
+    
     def categorize_new_bank_statement(self,Bank_statement_csv_name):
         """1) get label on bank statement from csv.
            2) run ML classification to get from label, the enseigne ==> New column "Groupes par enseigne"
            3) run ML classification to get from the enseigne, the type ==> New column "Groupes par type"
            4) perform a loop for to categorize from the type to structure ==> New column "Groupes par structure"
+           5)perform a loop for to categorize from the type to structure ==> New column "Groupes par structure"
+
            
            input:
            Bank_statement_csv_name (string)==> the name of csv
@@ -357,11 +394,13 @@ class Account(object):
             if len(list(structure_tmp))==0:
                 structure_tmp=["not find"]
             #write in column "structure" the structure with the method loc
-            results_df.loc[results_df["type predicted"].eq(i),"structure"]=list(structure_tmp)[0]   
+            results_df.loc[results_df["type predicted"].eq(i),"structure"]=list(structure_tmp)[0] 
+        #5)perform a loop for to categorize from the structure to charge ==> New column "Type de charge ou revenus" Categorisation charge    
+        results_df["charge"]=results_df["structure"].apply(Account.categorisation_revenus_charge)
         return results_df
     
     
     
-# if __name__=='__main__':
-#      fichier="classifiction_todo_21.csv"
-#      result_df=categorize_new_bank_statement(fichier)
+if __name__=='__main__':
+      fichier="notebooks/classifiction_todo_21.csv"
+      result_df=Account().categorize_new_bank_statement(fichier)
