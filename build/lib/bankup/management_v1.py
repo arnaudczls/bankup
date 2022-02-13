@@ -294,9 +294,11 @@ class Account(object):
             pd.DataFrame(Groupes_par_structure,columns=["Groupes par structure"]),
             pd.DataFrame(Groupes_par_type,columns=["Groupes par type"])
                 ],axis=1)
+        self.categorisation_definition_df["Type de charge ou revenus"]=self.categorisation_definition_df["Groupes par structure"].apply(Account.categorisation_revenus_charge)
         return self.categorisation_definition_df
     
     def categorisation_revenus_charge(x):
+        #Function perform to clasifi charges
         switcher={
             "Revenus":"Revenus",
             "Revenus du capital":"Revenus du capital",
@@ -335,7 +337,7 @@ class Account(object):
            2) run ML classification to get from label, the enseigne ==> New column "Groupes par enseigne"
            3) run ML classification to get from the enseigne, the type ==> New column "Groupes par type"
            4) perform a loop for to categorize from the type to structure ==> New column "Groupes par structure"
-           5)perform a loop for to categorize from the type to structure ==> New column "Groupes par structure"
+              perform a loop for to categorize from the type to structure ==> New column "Type de charge ou revenus"
 
            
            input:
@@ -389,13 +391,16 @@ class Account(object):
             #Find all type (for exemple "impot") in dataframe test
             structure_tmp=categorisation_df[
                                 categorisation_df[["Groupes par type"]].eq(i).any(1)
-                                            ]["Groupes par structure"]
-            if len(list(structure_tmp))==0:
-                structure_tmp=["not find"]
+                                            ][["Groupes par structure","Type de charge ou revenus"]]
+            if structure_tmp.empty:
+                structure_tmp=pd.DataFrame()
+                structure_tmp["Groupes par structure"]=["not find"]
+                structure_tmp["Type de charge ou revenus"]=["not find"]
             #write in column "structure" the structure with the method loc
-            results_df.loc[results_df["type predicted"].eq(i),"structure"]=list(structure_tmp)[0] 
-        #5)perform a loop for to categorize from the structure to charge ==> New column "Type de charge ou revenus" Categorisation charge    
-        results_df["charge"]=results_df["structure"].apply(Account.categorisation_revenus_charge)
+            results_df.loc[results_df["type predicted"].eq(i),"structure"]=list(structure_tmp["Groupes par structure"])[0]
+            #write in column "Type de charge ou revenus" the structure with the method loc
+            results_df.loc[results_df["type predicted"].eq(i),"charge"]=list(structure_tmp["Type de charge ou revenus"])[0] 
+
         return results_df
     
     
