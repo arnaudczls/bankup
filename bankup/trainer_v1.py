@@ -34,7 +34,7 @@ class Trainer_cost_model(object):
         #Def path to stock and run model.joblibs
         self.model_directory= "model"
         self.model_file='model_cost.joblib'
-        path=Path(__file__).parents[1]
+        path=Path(__file__)#.parents[1]
         self.path=os.path.join(path,self.model_directory)
         self.file_name=os.path.join(self.path, self.model_file)
 

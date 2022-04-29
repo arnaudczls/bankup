@@ -14,6 +14,8 @@ setup(
     author_email='a.cazelles@gmail.com',
     license='unlicense',
     packages=find_packages(),
+    #Import les models
+    package_data={'bankup': ['model/*.joblib']},
     install_requires=requirements,
     # include_package_data: to install data from MANIFEST.in
     include_package_data=True,
