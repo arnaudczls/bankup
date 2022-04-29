@@ -70,16 +70,16 @@ class Account(object):
                         "Location avignon",
                         "Location toulouse",
                         "Remboursement de pret barcelone",
-                        "EDF",
+                        "Edf",
                         "Eau",
                         "Copro",
-                        "Abonnement internet et téléphone",
-                        "Abonnement télé"
+                        "Abonnement internet et telephone",
+                        "Abonnement tele"
                     ]
         type_Assurance=[
                         "Assurance voiture arnaud",
                         "Assurance voiture marine",
-                        "Assurance  protection juridique",
+                        "Assurance protection juridique",
                         "Assurance logement barcelone",
                         "Assurance logement avignon",
                         "Assurance scolaire"
@@ -151,7 +151,7 @@ class Account(object):
                     "Coiffeur"
                     ]
         type_Sante=[
-                    "Consultation de praticiens généraliste",
+                    "Consultation de praticiens generaliste",
                     "Ophtalmologue et lunette",
                     "Gynecologie et accouchement",
                     "acupuncture",
@@ -175,10 +175,10 @@ class Account(object):
                     "Course sport",
                     "Vetement et equipement sport arnaud",
                     "Vetement et equipement sport marine",
-                    "Journaux, revues, poste",
+                    "Journaux, revues",
                     "Tissus, couture et creation",
                     "Jeux, livres arthur",
-                    "Sortie soirée, cinema",
+                    "Sortie soiree, cinema",
                     "Musee, expo et culture",
                     "Formation, education, MOOC",
                     "CE arnaud",
@@ -244,7 +244,7 @@ class Account(object):
                 ]
         type_Evenement_de_vie=[
                     "Mariage",
-                    "Déménagement",
+                    "Demenagement",
                 ]
         
         dico={}
@@ -406,5 +406,5 @@ class Account(object):
     
     
 if __name__=='__main__':
-      fichier="notebooks/classifiction_todo_21.csv"
-      result_df=Account().categorize_new_bank_statement(fichier)
+    fichier="notebooks/classifiction_todo_21.csv"
+    result_df=Account().categorize_new_bank_statement(fichier)

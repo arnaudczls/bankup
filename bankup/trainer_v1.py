@@ -1,5 +1,6 @@
 #import
 import os
+from pathlib import Path
 #Pandas
 import pandas as pd
 #pipeline
@@ -30,6 +31,13 @@ class Trainer_cost_model(object):
         self.pipeline = None
         self.X = X
         self.y = y
+        #Def path to stock and run model.joblibs
+        self.model_directory= "model"
+        self.model_file='model_cost.joblib'
+        path=Path(__file__).parents[1]
+        self.path=os.path.join(path,self.model_directory)
+        self.file_name=os.path.join(self.path, self.model_file)
+
 
     def set_pipeline(self):
         """defines the pipeline as a class attribute"""
@@ -68,21 +76,15 @@ class Trainer_cost_model(object):
         return round(r2, 2)
 
     def save_model(self):
-        """method that saves the model into a .joblib file """
-        # path components
-        path_v2 = ".."
-        directory_name = "model"
-        file_name='model_cost.joblib'
-        file_name=os.path.join(path_v2,directory_name, file_name)
-        
-        joblib.dump(self.pipeline, file_name)
-        print(f"saved {file_name} in directory: {directory_name}")
+        """method that saves the model into a .joblib file """       
+        joblib.dump(self.pipeline, self.file_name)
+        print(f"saved {self.model_file} in directory: {self.path}")
         
     def load_model(self):
         """method that load the model into a .joblib file """
         # load here
-        pipeline = joblib.load('model_cost.joblib')
-        print("model.joblib has been load ")
+        pipeline = joblib.load(self.file_name)
+        print(f"{self.model_file} has been load ")
         return pipeline
 
 class Trainer_class_model_label(object):
@@ -94,6 +96,12 @@ class Trainer_class_model_label(object):
         self.pipeline = None
         self.X = None
         self.y = None
+        #Def path to stock and run model.joblibs
+        self.model_directory= "model"
+        self.model_file='model_classification_label.joblib'
+        path=Path(__file__).parents[1]
+        self.path=os.path.join(path,self.model_directory)
+        self.file_name=os.path.join(self.path, self.model_file)
 
     def set_pipeline(self,list_stop_word=None):
         """defines the pipeline as a class attribute"""
@@ -127,28 +135,17 @@ class Trainer_class_model_label(object):
         # Score model
         r2 = self.pipeline.score(X_test,y_test)
         return round(r2, 2)
-
+ 
     def save_model(self):
-        """method that saves the model into a .joblib file """
-         # path components
-        path_v2 = ".."
-        directory_name = "model"
-        file_name='model_classification_label.joblib'
-        file_name=os.path.join(path_v2,directory_name, file_name)
+        """method that saves the model into a .joblib file """       
+        joblib.dump(self.pipeline, self.file_name)
+        print(f"saved {self.model_file} in directory: {self.path}")
         
-        joblib.dump(self.pipeline, file_name)
-        print(f"saved {file_name} in directory: {directory_name}")
-        
-            
     def load_model(self):
         """method that load the model into a .joblib file """
         # load here
-        path_v2 = ".."
-        directory_name = "model"
-        file_name='model_classification_label.joblib'
-        file_name=os.path.join(path_v2,directory_name, file_name)
-        pipeline = joblib.load(file_name)
-        print(f"{file_name} has been load")
+        pipeline = joblib.load(self.file_name)
+        print(f"{self.model_file} has been load ")
         return pipeline
 
 class Trainer_class_model_enseigne(object):
@@ -160,6 +157,12 @@ class Trainer_class_model_enseigne(object):
         self.pipeline = None
         self.X = None
         self.y = None
+        #Def path to stock and run model.joblibs
+        self.model_directory= "model"
+        self.model_file='model_classification_enseigne.joblib'
+        path=Path(__file__).parents[1]
+        self.path=os.path.join(path,self.model_directory)
+        self.file_name=os.path.join(self.path, self.model_file)
 
     def set_pipeline(self,list_stop_word=None):
         """defines the pipeline as a class attribute"""
@@ -195,26 +198,15 @@ class Trainer_class_model_enseigne(object):
         return round(r2, 2)
 
     def save_model(self):
-        """method that saves the model into a .joblib file """
-         # path components
-        path_v2 = ".."
-        directory_name = "model"
-        file_name='model_classification_enseigne.joblib'
-        file_name=os.path.join(path_v2,directory_name, file_name)
+        """method that saves the model into a .joblib file """       
+        joblib.dump(self.pipeline, self.file_name)
+        print(f"saved {self.model_file} in directory: {self.path}")
         
-        joblib.dump(self.pipeline, file_name)
-        print(f"saved {file_name} in directory: {directory_name}")
-        
-            
     def load_model(self):
         """method that load the model into a .joblib file """
         # load here
-        path_v2 = ".."
-        directory_name = "model"
-        file_name='model_classification_enseigne.joblib'
-        file_name=os.path.join(path_v2,directory_name, file_name)
-        pipeline = joblib.load(file_name)
-        print(f"{file_name} has been load")
+        pipeline = joblib.load(self.file_name)
+        print(f"{self.model_file} has been load ")
         return pipeline
 
 
