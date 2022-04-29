@@ -14,7 +14,8 @@ setup(
     author_email='a.cazelles@gmail.com',
     license='unlicense',
     packages=find_packages(),
-    #Import les models
+    #Import les models ML.
+    #Dans le package bankup il y a le repertoire model qui contient tous les models
     package_data={'bankup': ['model/*.joblib']},
     install_requires=requirements,
     # include_package_data: to install data from MANIFEST.in

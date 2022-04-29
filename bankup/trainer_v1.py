@@ -99,7 +99,7 @@ class Trainer_class_model_label(object):
         #Def path to stock and run model.joblibs
         self.model_directory= "model"
         self.model_file='model_classification_label.joblib'
-        path=Path(__file__).parents[1]
+        path=Path(__file__).parents[0]
         self.path=os.path.join(path,self.model_directory)
         self.file_name=os.path.join(self.path, self.model_file)
 
@@ -160,7 +160,7 @@ class Trainer_class_model_enseigne(object):
         #Def path to stock and run model.joblibs
         self.model_directory= "model"
         self.model_file='model_classification_enseigne.joblib'
-        path=Path(__file__).parents[1]
+        path=Path(__file__).parents[0]
         self.path=os.path.join(path,self.model_directory)
         self.file_name=os.path.join(self.path, self.model_file)
 

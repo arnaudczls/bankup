@@ -26,7 +26,7 @@ def get_data(fichier,onglet):
     #Mise a jour: 29/06/2021
     #----------end info---------------
     # Path
-    path=Path(__file__).parents[1]
+    path=Path(__file__).parents[0]
     path_v2 = "raw_data"
     # Join various path components 
     fichier=os.path.join(path,path_v2, fichier)
