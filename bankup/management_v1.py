@@ -5,14 +5,25 @@ import pandas as pd
 #pipeline
 #package
 import bankup.data as data
-from bankup.trainer_v1 import  Trainer_class_model_label,Trainer_class_model_enseigne
+from bankup.trainer_v2 import  Trainer_class_model_label,Trainer_class_model_enseigne
 
 
 class Account(object):
     def __init__(self):
         """
-            X: pandas DataFrame
-            y: pandas Series
+            class which can add new bank statement.
+            Input: file.csv
+            Output: dataframe with 5 columns
+                    1==>Label (from file.csv)
+                        ex:CB AUCHAN DRIVE FACT 190321
+                    2==>enseigne predicted
+                        ex:AUCHAN
+                    3==>type predicted
+                        ex:Alimentation domicile
+                    4==>structure
+                        ex:Alimentation
+                    5==>charge
+                        ex:Charges courantes
         """
         self.categorisation_definition_df = None
         #self.X = X
@@ -73,7 +84,7 @@ class Account(object):
                         "Edf",
                         "Eau",
                         "Copro",
-                        "Abonnement internet et telephone",
+                        "Abonnement internet et telephonie",
                         "Abonnement tele"
                     ]
         type_Assurance=[
@@ -99,7 +110,7 @@ class Account(object):
         type_Alimentation=[
                     "Alimentation domicile",
                     "Cantine",
-                    "Cantine Arthur"
+                    "Cantine arthur",
                     "Resto",
                     "Mc do",
                     "Pizza",
@@ -107,7 +118,8 @@ class Account(object):
                     "Boucherie",
                     "Boulangerie, patisserie, gateau et chocolat",
                     "Fromage",
-                    "Caviste"
+                    "Caviste",
+                    "Cafe et the"
                 ]
         type_Entretien_du_logement=[
                             "Produit entretien logement",
@@ -178,7 +190,7 @@ class Account(object):
                     "Journaux, revues",
                     "Tissus, couture et creation",
                     "Jeux, livres arthur",
-                    "Sortie soiree, cinema",
+                    "Sortie soiree, cinema et we",
                     "Musee, expo et culture",
                     "Formation, education, MOOC",
                     "CE arnaud",
@@ -354,7 +366,7 @@ class Account(object):
         #2) run ML classification to get from label, the enseigne ==> New column "Groupes par enseigne
         #import ML classification model
         class_model_enseigne=Trainer_class_model_label()
-        pipeline_enseigne=class_model_enseigne.load_model()
+        pipeline_enseigne=class_model_enseigne.load_model_package()
         print("ML classification model to get from label, the enseigne",pipeline_enseigne)
         # make prediction
         results = pipeline_enseigne.predict(df.Label)
@@ -368,7 +380,7 @@ class Account(object):
         #3) run ML classification to get from the enseigne, the type ==> New column "Groupes par type"
         #import ML classification model
         class_model_type=Trainer_class_model_enseigne()
-        pipeline_type=class_model_type.load_model()
+        pipeline_type=class_model_type.load_model_package()
         print("ML classification model to get from the enseigne,the type",pipeline_type)
         # make prediction
         results = pipeline_type.predict(results_df["enseigne predicted"])
@@ -404,7 +416,7 @@ class Account(object):
         return results_df
     
     
-    
-if __name__=='__main__':
-    fichier="notebooks/classifiction_todo_21.csv"
-    result_df=Account().categorize_new_bank_statement(fichier)
+#Not update    
+# if __name__=='__main__':
+#     fichier="notebooks/classifiction_todo_21.csv"
+#     result_df=Account().categorize_new_bank_statement(fichier)

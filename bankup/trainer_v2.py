@@ -25,8 +25,8 @@ from bankup.encoder_v1 import CyclicalEncoder
 class Trainer_cost_model(object):
     def __init__(self, X, y):
         """
-            X: pandas DataFrame
-            y: pandas Series
+            Machine learning model which could do a prediction of cost by month.
+            NOT UPDATE
         """
         self.pipeline = None
         self.X = X
@@ -90,8 +90,11 @@ class Trainer_cost_model(object):
 class Trainer_class_model_label(object):
     def __init__(self):
         """
-            X: pandas DataFrame
-            y: pandas Series
+            Machine learning model which could transform label to enseigne.
+            Example: CB INTERMARCHE FACT 041220     ==>INTERMARCHE
+                     PRLV BOUYGUES TELECOM          ==>BOUYGUES
+                     CASTORAMA CARTE 00897137       ==>CASTORAMA
+                     CB GRAND FRAIS FACT 210420     ==>GRAND FRAIS
         """
         self.pipeline = None
         self.X = None
@@ -170,8 +173,11 @@ class Trainer_class_model_label(object):
 class Trainer_class_model_enseigne(object):
     def __init__(self):
         """
-            X: pandas DataFrame
-            y: pandas Series
+            Machine learning model which could transform enseigne to type.
+            Example: INTERMARCHE ==>Alimentation domicile
+                     BOUYGUES    ==>Abonnement internet et telephonie
+                     CASTORAMA   ==>Mobilier
+                     GRAND FRAIS ==>Alimentation domicile
         """
         self.pipeline = None
         self.X = None
@@ -179,9 +185,13 @@ class Trainer_class_model_enseigne(object):
         #Def path to stock and run model.joblibs
         self.model_directory= "model"
         self.model_file='model_classification_enseigne.joblib'
-        path=Path(__file__).parents[0]
-        self.path=os.path.join(path,self.model_directory)
-        self.file_name=os.path.join(self.path, self.model_file)
+        #Path du pakage quand c'est pakagé==> a utilisé pour la fonction "load_model"
+        self.path_local=None
+        self.file_name_local=None
+        #Path du pakage quand c'est pakagé==> a utilisé pour la fonction "load_model"
+        path_package=Path(__file__).parents[0]
+        self.path_package=os.path.join(path_package,self.model_directory)
+        self.file_name_package=os.path.join(self.path_package, self.model_file)
 
     def set_pipeline(self,list_stop_word=None):
         """defines the pipeline as a class attribute"""
@@ -217,34 +227,45 @@ class Trainer_class_model_enseigne(object):
         # Score model
         r2 = self.pipeline.score(X_test,y_test)
         return round(r2, 2)
-
-    def save_model(self):
-        """method that saves the model into a .joblib file """       
-        joblib.dump(self.pipeline, self.file_name)
-        print(f"saved {self.model_file} in directory: {self.path}")
+    
+    def save_model_local(self,path_local):
+        """method that saves the model into a .joblib file from localy (in the library bankup) """
+        self.path_local=path_local
+        self.file_name_local=os.path.join(self.path_local, self.model_file)      
+        joblib.dump(self.pipeline, self.file_name_local)
+        print(f"saved {self.model_file} in directory: {path_local}")
         
-    def load_model(self):
-        """method that load the model into a .joblib file """
+    def load_model_local(self,path_local):
+        """method that load the model into a .joblib file from localy (in the library bankup) """
+        self.path_local=path_local
+        self.file_name_local=os.path.join(self.path_local, self.model_file)
         # load here
-        pipeline = joblib.load(self.file_name)
-        print(f"{self.model_file} has been load ")
+        pipeline = joblib.load(self.file_name_local)
+        print(f"{self.model_file} has been load from {self.file_name_local}")
+        return pipeline
+    
+    def load_model_package(self):
+        """method that load the model into a .joblib file from site-pakages """
+        # load here
+        pipeline = joblib.load(self.file_name_package)
+        print(f"{self.model_file} has been load from {self.file_name_package}")
         return pipeline
 
-
-if __name__ == "__main__":
-    # Get and clean data
-    fichier='releves_banque_2015_16_17_18_19_20_21_V7.xls'
-    onglet='Releve_compte'
-    df = data.get_data_cost_by_month(fichier,onglet)
-    print(df)
-    X=df.drop(columns=["Valeurs"])
-    y = df["Valeurs"]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3,random_state=0)
-     # Train and save model, locally and
-    trainer = Trainer_cost_model(X=X_train, y=y_train)
-    trainer.run()
-    r2 = trainer.score(X_test, y_test)
-    print(f"r2: {r2}")
-    predict_df = trainer.evaluate(X_test, y_test)
-    print(predict_df)
-    trainer.save_model()
+#Not update
+# if __name__ == "__main__":
+#     # Get and clean data
+#     fichier='releves_banque_2015_16_17_18_19_20_21_V7.xls'
+#     onglet='Releve_compte'
+#     df = data.get_data_cost_by_month(fichier,onglet)
+#     print(df)
+#     X=df.drop(columns=["Valeurs"])
+#     y = df["Valeurs"]
+#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3,random_state=0)
+#      # Train and save model, locally and
+#     trainer = Trainer_cost_model(X=X_train, y=y_train)
+#     trainer.run()
+#     r2 = trainer.score(X_test, y_test)
+#     print(f"r2: {r2}")
+#     predict_df = trainer.evaluate(X_test, y_test)
+#     print(predict_df)
+#     trainer.save_model()
