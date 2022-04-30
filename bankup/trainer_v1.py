@@ -34,7 +34,7 @@ class Trainer_cost_model(object):
         #Def path to stock and run model.joblibs
         self.model_directory= "model"
         self.model_file='model_cost.joblib'
-        path=Path(__file__)#.parents[1]
+        path=Path(__file__).parents[0]
         self.path=os.path.join(path,self.model_directory)
         self.file_name=os.path.join(self.path, self.model_file)
 
@@ -99,7 +99,10 @@ class Trainer_class_model_label(object):
         #Def path to stock and run model.joblibs
         self.model_directory= "model"
         self.model_file='model_classification_label.joblib'
-        path=Path(__file__).parents[0]
+        
+        path_local=Path(__file__).parents[0]
+        #Path du pakage quand c'est pakagé==> a utilisé pour la fonction "load_model"
+        path_package=Path(__file__).parents[0]
         self.path=os.path.join(path,self.model_directory)
         self.file_name=os.path.join(self.path, self.model_file)
 
@@ -211,6 +214,9 @@ class Trainer_class_model_enseigne(object):
 
 
 if __name__ == "__main__":
+    
+    
+    test=Path(__file__).parents[0]
     # Get and clean data
     fichier='releves_banque_2015_16_17_18_19_20_21_V7.xls'
     onglet='Releve_compte'

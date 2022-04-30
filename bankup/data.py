@@ -26,10 +26,10 @@ def get_data(fichier,onglet):
     #Mise a jour: 29/06/2021
     #----------end info---------------
     # Path
-    path=Path(__file__).parents[0]
-    path_v2 = "raw_data"
+    #path=Path(__file__).parents[0]
+    #path_v2 = "raw_data"
     # Join various path components 
-    fichier=os.path.join(path,path_v2, fichier)
+    #fichier=os.path.join(path,path_v2, fichier)
     Excel_releve_compte = pd.ExcelFile(fichier)
     releve_compte=pd.read_excel(Excel_releve_compte, onglet)
     #Prend la ligne que l'on va utilisé pour la metre en entete
