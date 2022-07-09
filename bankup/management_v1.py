@@ -24,6 +24,10 @@ class Account(object):
                         ex:Alimentation
                     5==>charge
                         ex:Charges courantes
+                        
+            Posibility to calculate balance of statement by month.
+            Calculation of each cost and income to see at the end of the month, there are more cost than income.
+            function==> get_balance_cost_income_by_month
         """
         self.categorisation_definition_df = None
         #self.X = X
@@ -155,7 +159,7 @@ class Account(object):
                         "Vetement marine",
                         "Vetement arthur",
                         "Lingerie",
-                        "Bijoux, montres, sac",
+                        "Bijoux, montres et sac",
                         "Nettoyage, reparation et pressing vetement",
                     ]
         type_Beaute_et_bien_etre=[
@@ -414,6 +418,75 @@ class Account(object):
             results_df.loc[results_df["type predicted"].eq(i),"charge"]=list(structure_tmp["Type de charge ou revenus"])[0] 
 
         return results_df
+
+    def get_balance_cost_income_by_month (releve_compte_month):
+        #----------info---------------
+        #Posibility to calculate balance of statement by month.
+        #Calculation of each cost and income to see at the end of the month, there are more cost than income.
+        # 
+        #The summe of income and cost is done each month   
+        #    
+        #Warning!!!!
+        #the caterogry Epargne and Revenus du capital are exlut for the calculation
+        #
+        #Input:
+        #   releve_compte_month=dataframe which comme from function data.get_data_by_month
+        #
+        #Output:
+        #dataframe
+        #
+        #Mise a jour: 09/07/2022
+        #----------end info---------------
+        
+        #Initialisation
+        balance_df=pd.DataFrame(columns=["year","month","benefice lost"])
+        year_i=releve_compte_month.iloc[0]["year"]
+        month_i=releve_compte_month.iloc[0]["month"]
+        somme=0
+        
+        #loop
+        for i in range(len(releve_compte_month)):
+            #years
+            if releve_compte_month.iloc[i]["year"]==year_i:
+                #month
+                if releve_compte_month.iloc[i]["month"]==month_i:
+                    test=releve_compte_month.iloc[i]["Type de charge ou revenus"]
+                    if (test!='Epargne'and test!='Revenus du capital'):
+                        somme=somme+releve_compte_month.iloc[i]["Valeurs"] 
+                # write df and change month
+                else:
+                    #write df        
+                    balance_df.loc[-1] = [year_i, month_i, somme]
+                    balance_df.index = balance_df.index + 1
+                    balance_df = balance_df.sort_index()
+                    #change month
+                    month_i=releve_compte_month.iloc[i]["month"]
+                    somme=0
+                    test=releve_compte_month.iloc[i]["Type de charge ou revenus"]
+                    if (test!='Epargne'and test!='Revenus du capital'):
+                        somme=somme+releve_compte_month.iloc[i]["Valeurs"]
+                        
+            #write df change years
+            else:
+                #write df        
+                balance_df.loc[-1] = [year_i, month_i, somme]
+                balance_df.index = balance_df.index + 1
+                balance_df = balance_df.sort_index()
+                #change years and month
+                year_i=releve_compte_month.iloc[i]["year"]
+                month_i=releve_compte_month.iloc[i]["month"]
+                somme=0
+                test=releve_compte_month.iloc[i]["Type de charge ou revenus"]
+                if (test!='Epargne'and test!='Revenus du capital'):
+                    somme=somme+releve_compte_month.iloc[i]["Valeurs"]
+
+                    
+        # write last row        
+        balance_df.loc[-1] = [year_i, month_i, somme]
+        balance_df.index = balance_df.index + 1
+        balance_df = balance_df.sort_index(ascending=False) 
+        balance_df = balance_df.reset_index()  
+        return balance_df
     
     
 #Not update    
