@@ -2,6 +2,10 @@
 import os
 #Pandas
 import pandas as pd
+#json
+import json
+#Path
+from pathlib import Path
 #pipeline
 #package
 import bankup.data as data
@@ -34,265 +38,17 @@ class Account(object):
         
     def categorisation_definition(self):
         """Import dataframe with the architecture of categorisation.
-           
         """
-        structure=[
-                    "Revenus",
-                    "Revenus du capital",
-                    "Habitation",
-                    "Assurance",
-                    "Garde enfants",
-                    "Scolarité",
-                    "Impot",
-                    "Alimentation",
-                    "Entretien du logement",
-                    "Amenagement du logement",
-                    "Equipement du logement",
-                    "Transport",
-                    "Vehicule",
-                    "Achat vehicule",
-                    "Habillement",
-                    "Beaute et bien etre",
-                    "Sante",
-                    "Culture, loisirs, education et sport",
-                    "Moka",
-                    "Vacances",
-                    "Epargne cour terme",
-                    "Epargne moyen terme",
-                    "Epargne long terme",
-                    "Divers",
-                    "Service",
-                    "Poste",
-                    "Frais professionnel",
-                    "Amende",
-                    "Evenement de vie",
-                ]
-        type_Revenus=[
-                    "Salaire arnaud",
-                    "Salaire marine",
-                    "Pole emploi arnaud",
-                    "Pole emploi marine",
-                    "Allocation Familial",
-                    "Remise de cheque",
-                    "Remise espece",
-                    "Interessement, particiption",
-                ]
-        type_Revenus_du_capital=[
-                    "Vente barcelone",
-                    "Loyer pinel"
-                ]
-        type_Habitation=[
-                        "Location avignon",
-                        "Location toulouse",
-                        "Remboursement de pret barcelone",
-                        "Edf",
-                        "Eau",
-                        "Copro",
-                        "Abonnement internet et telephonie",
-                        "Abonnement tele"
-                    ]
-        type_Assurance=[
-                        "Assurance voiture arnaud",
-                        "Assurance voiture marine",
-                        "Assurance protection juridique",
-                        "Assurance logement barcelone",
-                        "Assurance logement avignon",
-                        "Assurance scolaire"
-                    ]
         
-        type_Garde_enfants=[
-                        "Creche", 
-                        "Nounou",
-                        "Babysister"
-                    ]
-        type_Scolarite=[
-                        "Ecole arthur"
-                    ]
-        type_Impot=[
-                    "Impot",
-                ]
-        type_Alimentation=[
-                    "Alimentation domicile",
-                    "Cantine",
-                    "Cantine arthur",
-                    "Resto",
-                    "Mc do",
-                    "Pizza",
-                    "Glace",
-                    "Boucherie",
-                    "Boulangerie, patisserie, gateau et chocolat",
-                    "Fromage",
-                    "Caviste",
-                    "Cafe et the"
-                ]
-        type_Entretien_du_logement=[
-                            "Produit entretien logement",
-                            "Bricolage, quincaillerie"
-                        ]
-        type_Amenagement_du_logement=[
-                            "Plante, fleurs",
-                            "Decoration",
-                            "Couverture, drap",
-                            "Affaire de bureau"
-                        ]
-        type_Equipement_du_logement=[
-                        "Mobilier",
-                        "Electromenager",
-                        "Cuisine, vaisselle",
-                        "Chambre arthur",
-                        "Telephonie, PC et hardware",
-                    ]
-        type_Transport=[
-                    "Essence",
-                    "Transports en commun",
-                    "Autoroute",
-                    "Parking",
-                ]
-        type_Vehicule=[
-                    "Entretien utilisation voiture"
-                    ]
-        type_Achat_vehicule=[
-                    "Achat vehicule"
-                ]
-        type_Habillement=[
-                        "Vetement arnaud",
-                        "Vetement marine",
-                        "Vetement arthur",
-                        "Lingerie",
-                        "Bijoux, montres et sac",
-                        "Nettoyage, reparation et pressing vetement",
-                    ]
-        type_Beaute_et_bien_etre=[
-                    "Hygiene, esthetic, cosmetique et massage",
-                    "Coiffeur"
-                    ]
-        type_Sante=[
-                    "Consultation de praticiens generaliste",
-                    "Ophtalmologue et lunette",
-                    "Gynecologie et accouchement",
-                    "acupuncture",
-                    "Neurologie",
-                    "Podologue",
-                    "Gastroenterologue",
-                    "Pediatre",
-                    "Medecin du sport",
-                    "Cardiologue",
-                    "Dentiste",
-                    "Pharmacie",
-                    "Radiographie",
-                    "Laboratoire et clinique",
-                    "Cpam et Mutelle",
-                ]
-        type_Culture_loisirs_education_et_sport=[
-                    "Photo et album",
-                    "Livres, disques, films, Jeux",
-                    "Abonnement sport, licence et piscine",
-                    "Abonnement sport, licence et piscine Arthur",
-                    "Course sport",
-                    "Vetement et equipement sport arnaud",
-                    "Vetement et equipement sport marine",
-                    "Journaux, revues",
-                    "Tissus, couture et creation",
-                    "Jeux, livres arthur",
-                    "Sortie soiree, cinema et we",
-                    "Musee, expo et culture",
-                    "Formation, education, MOOC",
-                    "CE arnaud",
-                    "CE marine",
-                    "Spectacle, concert, theatre",
-                    "Parc attraction"
-                ]
-        type_Moka=[
-                "Veterinaire",
-                "Alimentation moka",
-            ]
-        type_Vacances=[
-                    "Vacances, week-end",
-                    "Voyage barcelone",
-                    "Voyage New York",
-                    "Voyage Tanzani",
-                    "Hotel",
-                    "Transport longue distance train",
-                    "Transport longue distance avion",
-                ]
-        type_Epargne_cour_terme=[
-                    "Livret A arnaud",
-                    "Livret A marine",
-                    "Livret DDS arnaud",
-                    "Livret DDS marine",
-                ]
-        type_Epargne_moyen_terme=[
-                    "Epargne entreprise arnaud",
-                    "Epargne entreprise marine",
-                    "Assurance vie arnaud",
-                    "Assurance vie marine",
-                ]
-        type_Epargne_long_terme=[
-                    "Remboursement de pret pinel",
-                    "Complement pinel",
-                    "Assurance logement pinel"
-                ]
-        type_Divers=[
-                    "Cadeau",
-                    "Retrait espece",
-                    "Cheque non identifie",
-                    "Virement aviles liberto elisabeth",
-                    "Virement emile guillaume",
-                    "Virement changement de compte",
-                    "Coordonnier,cles,reparation",
-                    "Dechetterie"
-                ]
-        type_Service=[
-                    "Frais banque",
-                    "Impression imprimante",
-                    "Service google"
-                ]
-        type_Poste=[
-                    "Poste"
-                ]
-        type_Frais_professionnel=[
-                    "Deplacement pro",
-                    "Vetement professionnel",
-                    "Evenementiel"
-                ]
-        type_Amende=[
-                    "Amende"
-                ]
-        type_Evenement_de_vie=[
-                    "Mariage",
-                    "Demenagement",
-                ]
+        #get path and name file.json
+        fichier='categorisation_table.json'
+        #Path du pakage quand c'est pakagé==> a utilisé pour la fonction "load_model"
+        path_package=Path(__file__).parents[0]
+        fichier=os.path.join(path_package,fichier)
         
-        dico={}
-        dico[structure[0]]=type_Revenus
-        dico[structure[1]]=type_Revenus_du_capital
-        dico[structure[2]]=type_Habitation
-        dico[structure[3]]=type_Assurance
-        dico[structure[4]]=type_Garde_enfants
-        dico[structure[5]]=type_Scolarite
-        dico[structure[6]]=type_Impot
-        dico[structure[7]]=type_Alimentation
-        dico[structure[8]]=type_Entretien_du_logement
-        dico[structure[9]]=type_Amenagement_du_logement
-        dico[structure[10]]=type_Equipement_du_logement
-        dico[structure[11]]=type_Transport
-        dico[structure[12]]=type_Vehicule
-        dico[structure[13]]=type_Achat_vehicule
-        dico[structure[14]]=type_Habillement
-        dico[structure[15]]=type_Beaute_et_bien_etre
-        dico[structure[16]]=type_Sante
-        dico[structure[17]]=type_Culture_loisirs_education_et_sport
-        dico[structure[18]]=type_Moka
-        dico[structure[19]]=type_Vacances
-        dico[structure[20]]=type_Epargne_cour_terme
-        dico[structure[21]]=type_Epargne_moyen_terme
-        dico[structure[22]]=type_Epargne_long_terme
-        dico[structure[23]]=type_Divers
-        dico[structure[24]]=type_Service
-        dico[structure[25]]=type_Poste
-        dico[structure[26]]=type_Frais_professionnel
-        dico[structure[27]]=type_Amende
-        dico[structure[28]]=type_Evenement_de_vie
+        with open(fichier) as f:
+            dico = json.load(f)
+        f.close()
 
         #Structure_df=pd.DataFrame.from_dict(dico,orient="index")
 
@@ -355,7 +111,6 @@ class Account(object):
            4) perform a loop for to categorize from the type to structure ==> New column "Groupes par structure"
               perform a loop for to categorize from the type to structure ==> New column "Type de charge ou revenus"
 
-           
            input:
            Bank_statement_csv_name (string)==> the name of csv
            
