@@ -77,7 +77,7 @@ class Account(object):
             "Habitation":"Charges fixes",
             "Assurance":"Charges fixes",  
             "Garde enfants":"Charges fixes",
-            "Scolarité":"Charges fixes",
+            "Scolarite":"Charges fixes",
             "Impot":"Charges fixes",
             "Alimentation":"Charges courantes",
             "Entretien du logement":"Charges courantes",
@@ -182,7 +182,7 @@ class Account(object):
         #The summe of income and cost is done each month   
         #    
         #Warning!!!!
-        #the caterogry Epargne and Revenus du capital are exlut for the calculation
+        #the caterogry Epargne and Revenus du capital are exclut for the calculation
         #
         #Input:
         #   releve_compte_month=dataframe which comme from function data.get_data_by_month
