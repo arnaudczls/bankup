@@ -72,12 +72,14 @@ def get_data_clean(fichier,onglet,drop_row_null="yes"):
     #----------end info---------------
     releve_compte=get_data(fichier,onglet)
     # Traitement des dates
-    releve_compte['Date']=pd.to_datetime(releve_compte['Date'])
+    releve_compte['Date']=pd.to_datetime(releve_compte['Date'],dayfirst=True)
     #releve_compte['Date']=pd.to_datetime(releve_compte['Date'],format='%Y-%m-%d')
     #Rajoute une colonnes years, month and day
     releve_compte["year"]=releve_compte["Date"].dt.year
     releve_compte["month"]=releve_compte["Date"].dt.month
     releve_compte["day"]=releve_compte["Date"].dt.day
+    #Permet d'avoir la date dans le format jours/ mois/ annees
+    releve_compte['Date']=releve_compte['Date'].apply(lambda x: x.date().strftime('%d/%m/%Y'))
     
     # Traitement des valeurs
     releve_compte['Valeurs']=pd.to_numeric(releve_compte['Valeurs'],downcast="float")
