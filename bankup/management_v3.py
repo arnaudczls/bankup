@@ -2,6 +2,8 @@
 import os
 #Pandas
 import pandas as pd
+#Numpy
+import numpy as np
 #json
 import json
 #Path
@@ -35,6 +37,52 @@ class Account(object):
         """
         self.categorisation_definition_df = None
         #self.X = X
+        
+    def balance_account(df,Year,Month,Day,Day_include=True):
+        """
+            Fonction qui permet d'avoir l'argent restant sur le compte en fonction du jour.
+            Input:
+                   df= dataframe avec les releve de compte
+                   Year= l'année (par exemple 2022)
+                   Month= le mois (par exemple 04)
+                   Day= le jour  (par exemple 01)
+                   Day_include= prendre en compte le jour compris
+                   (Par defaut= Yes==> day=01, la fonction va perndre le jours 01 aussi dans le calcul (le 02 non))
+        """
+        # #import data
+        # df=data.get_data(fichier,onglet)
+        # df['Date']=pd.to_datetime(df['Date'],dayfirst=True)
+
+        separation="-"
+        #Date initial
+        year_ini="2017"
+        Month_ini="01"
+        day_ini="07"
+
+        valeur_ini=6146.96#value comes from RELEVES_0085792980_20170209.pdf
+
+        date_ini=''.join([year_ini,separation,Month_ini,separation,day_ini])
+        date_ini = pd.to_datetime(date_ini)
+
+        #Date objectif
+        date=''.join([str(Year),separation,str(Month),separation,str(Day)])
+        date = pd.to_datetime(date)
+
+        #filter
+        if Day_include==True:
+            date_filter = np.logical_and(pd.to_datetime(df['Date'],dayfirst=True) > date_ini,
+                                         pd.to_datetime(df['Date'],dayfirst=True) <= date)
+        else:
+            date_filter = np.logical_and(pd.to_datetime(df['Date'],dayfirst=True) > date_ini,
+                                         pd.to_datetime(df['Date'],dayfirst=True) < date)
+        
+        df = df[date_filter]
+        df=df.reset_index(drop=True)
+
+        #Somme
+        Somme=valeur_ini+df["Valeurs"].sum()
+        
+        return Somme    
         
     def categorisation_definition(self):
         """Import dataframe with the architecture of categorisation.
